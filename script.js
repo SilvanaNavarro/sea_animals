@@ -177,6 +177,17 @@ async function initializePage() {
     animalName.textContent = creature.name;
     funFacts.textContent = getRandomFact(creature);
     
+    // Asegurar que los elementos iniciales sean visibles
+    setTimeout(() => {
+        const img = animalImage.querySelector('img');
+        if (img) {
+            img.style.opacity = '1';
+            img.style.transform = 'scale(1)';
+        }
+        animalName.style.opacity = '1';
+        funFacts.style.opacity = '1';
+    }, 100);
+    
     // Crear elementos decorativos
     createSeaweed();
     createBubbles();
