@@ -1,10 +1,130 @@
-{
-    "Tiburón Blanco": "https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg",
-    "Delfín Nariz de Botella": "https://divulga.cientifica.edu.pe/wp-content/uploads/Delfin-nariz-de-botella-1920x1280.jpg",
-    "Tortuga Marina": "https://www.oceano.org/wp-content/uploads/2019/05/Images_SW_illustration_16.jpg",
-    "Pulpo Azul": "https://palmitospark.es/wp-content/uploads/2023/04/pulos-habitat-y-alimentacion.jpg",
-    "Manta Raya": "https://blog.padi.com/wp-content/uploads/2019/04/manta-ray-25-1.jpg",
-    "Coral": "https://media.gq.com.mx/photos/60b24136fe7c1331bb8120a0/4:3/w_2664,h_1998,c_limit/arrecife-coral-especial_orig.jpg",
-    "Ballena Jorobada": "https://fotografias.lasexta.com/clipping/cmsimages01/2013/06/08/60D56AC5-488C-4632-BB4C-69D1D9C6F7F5/69.jpg?crop=1000,563,x0,y55&width=1280&height=720&optimize=low&format=jpg",
-    "Estrella de Mar": "https://www.bigfish.mx/__export/1750538943482/sites/debate/img/2025/06/21/estrellas_de_mar.jpg_1902800913.jpg"
-}
+[
+    {
+        "name": "Tiburón Blanco",
+        "facts": [
+            "Puede nadar a 56 km/h",
+            "Tiene 300 dientes afilados",
+            "Vive hasta 70 años",
+            "Detecta sangre a 5 km",
+            "Nace con 1 metro de largo",
+            "Come focas y leones marinos",
+            "Es depredador ápice",
+            "Tiene 6 sentidos agudos",
+            "Migra miles de kilómetros",
+            "Pesa hasta 3 toneladas"
+        ],
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg"
+    },
+    {
+        "name": "Delfín Nariz de Botella",
+        "facts": [
+            "Usan ecolocalización",
+            "Son muy inteligentes",
+            "Viven en grupos familiares",
+            "Comunican con silbidos",
+            "Nacen con cola hacia arriba",
+            "Duermen con un ojo abierto",
+            "Ayudan a otros animales",
+            "Pueden saltar 6 metros",
+            "Viven hasta 50 años",
+            "Nadan a 35 km/h"
+        ],
+        "imageUrl": "https://divulga.cientifica.edu.pe/wp-content/uploads/Delfin-nariz-de-botella-1920x1280.jpg"
+    },
+    {
+        "name": "Tortuga Marina",
+        "facts": [
+            "Viven hasta 150 años",
+            "Navegan usando campos magnéticos",
+            "Regresan a su nacimiento",
+            "Cuello se retrae dentro",
+            "Pueden contener la respiración",
+            "Comen medusas y algas",
+            "Sus huevos son redondos",
+            "Tienen patas como aletas",
+            "Migran 10,000 km",
+            "Son reptiles ancestrales"
+        ],
+        "imageUrl": "https://www.oceano.org/wp-content/uploads/2019/05/Images_SW_illustration_16.jpg"
+    },
+    {
+        "name": "Pulpo Azul",
+        "facts": [
+            "Tiene 3 corazones",
+            "Sangre azul por cobre",
+            "Cambian de color",
+            "Tienen 8 brazos",
+            "Son muy inteligentes",
+            "Pueden caminar",
+            "Escapan fácilmente",
+            "Viven 1-2 años",
+            "Comen cangrejos",
+            "Tienen 2 mil ventosas"
+        ],
+        "imageUrl": "https://palmitospark.es/wp-content/uploads/2023/04/pulos-habitat-y-alimentacion.jpg"
+    },
+    {
+        "name": "Manta Raya",
+        "facts": [
+            "Pueden saltar 2 metros",
+            "Comen plancton",
+            "Viven hasta 50 años",
+            "Tienen cerebro grande",
+            "Son muy gentiles",
+            "Nadan con gracia",
+            "Tienen 1.5 metros de ancho",
+            "Viven en aguas cálidas",
+            "No tienen aguijón",
+            "Pueden dar a luz crías vivas"
+        ],
+        "imageUrl": "https://blog.padi.com/wp-content/uploads/2019/04/manta-ray-25-1.jpg"
+    },
+    {
+        "name": "Coral",
+        "facts": [
+            "Son animales no plantas",
+            "Viven en colonias",
+            "Alimentan con plancton",
+            "Producen oxígeno",
+            "Hogar para peces",
+            "Crecen muy lentamente",
+            "Viven 5000 años",
+            "Cambio climático los afecta",
+            "Tienen simbiosis",
+            "Forman arrecifes"
+        ],
+        "imageUrl": "https://media.gq.com.mx/photos/60b24136fe7c1331bb8120a0/4:3/w_2664,h_1998,c_limit/arrecife-coral-especial_orig.jpg"
+    },
+    {
+        "name": "Ballena Jorobada",
+        "facts": [
+            "Son los animales más grandes",
+            "Cantan canciones complejas",
+            "Saltan fuera del agua",
+            "Viven 90 años",
+            "Migran 25,000 km",
+            "Comen krill",
+            "Tienen bigotes filtrantes",
+            "Nacen con 5 metros",
+            "Pueden sumergirse 500m",
+            "Son mamíferos"
+        ],
+        "imageUrl": "https://fotografias.lasexta.com/clipping/cmsimages01/2013/06/08/60D56AC5-488C-4632-BB4C-69D1D9C6F7F5/69.jpg?crop=1000,563,x0,y55&width=1280&height=720&optimize=low&format=jpg"
+    },
+    {
+        "name": "Estrella de Mar",
+        "facts": [
+            "Tienen 5 brazos",
+            "Regeneran partes",
+            "Comen mejillones",
+            "Mueven agua con brazos",
+            "Viven 35 años",
+            "No tienen cerebro",
+            "Tienen pies ambulacrales",
+            "Caminan boca abajo",
+            "Tienen ojos en puntas",
+            "Sienten con tacto"
+        ],
+        "imageUrl": "https://www.bigfish.mx/__export/1750538943482/sites/debate/img/2025/06/21/estrellas_de_mar.jpg_1902800913.jpg"
+    }
+]
