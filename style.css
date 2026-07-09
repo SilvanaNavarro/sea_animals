@@ -135,7 +135,7 @@ body {
 
 .fun-facts {
     position: absolute;
-    bottom: clamp(80px, 15vh, 120px);
+    bottom: clamp(140px, 25vh, 200px);
     left: 50%;
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.15);
@@ -152,6 +152,7 @@ body {
     opacity: 0;
     transition: opacity 0.5s ease;
     line-height: 1.4;
+    z-index: 12;
 }
 
 @keyframes pulse {
@@ -221,108 +222,245 @@ body {
     50% { transform: rotate(5deg); }
 }
 
-/* Contenedor de botones */
+/* Contenedor de botones - diseño base para pantallas ≥ 480px */
 .button-container {
     position: absolute;
     bottom: clamp(20px, 4vh, 30px);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: clamp(15px, 3vw, 20px);
+    flex-direction: row;
+    gap: clamp(10px, 2vw, 15px);
     z-index: 20;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 0 10px;
+    max-width: 90%;
+    width: 400px;
 }
 
-/* Estilos para el botón de cambio */
+/* Estilos base para ambos botones */
+.change-button, .change-fact-button {
+    color: transparent;
+    border: none;
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Botón de cambio (pez) */
 .change-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: clamp(12px, 2.5vw, 15px) clamp(24px, 5vw, 30px);
-    font-size: clamp(14px, 3vw, 16px);
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 25px;
+    min-width: clamp(80px, 15vw, 120px);
+    padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
     text-transform: uppercase;
     letter-spacing: clamp(0.5px, 1vw, 1px);
-    min-width: clamp(100px, 20vw, 150px);
 }
 
-.change-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-.change-button:active {
-    transform: translateY(0px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
-
-.change-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 50px;
-    z-index: -1;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-.change-button:hover::before {
-    opacity: 1;
-}
-
-/* Estilos para el botón de cambio de dato curioso */
+/* Botón de cambio de dato curioso (ventana de diálogo) */
 .change-fact-button {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-    border: none;
-    padding: clamp(12px, 2.5vw, 15px) clamp(24px, 5vw, 30px);
-    font-size: clamp(14px, 3vw, 16px);
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    border-radius: 15px;
+    min-width: clamp(80px, 15vw, 120px);
+    padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
     text-transform: uppercase;
     letter-spacing: clamp(0.5px, 1vw, 1px);
-    min-width: clamp(100px, 20vw, 150px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.change-fact-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+/* Media query para pantallas grandes (≥ 768px) - mantiene diseño base rectangular */
+@media (min-width: 768px) {
+    /* No se modifica el diseño base, mantiene los estilos de botones rectangulares con texto */
+    .button-container {
+        /* Mantiene los estilos base definidos anteriormente */
+    }
+    
+    /* Texto completo para pantallas grandes */
+    .change-button::after {
+        content: 'Cambiar Animal';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: clamp(12px, 2.5vw, 14px);
+        font-weight: bold;
+        z-index: 3;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+    }
+    
+    .change-fact-button::after {
+        content: 'Dato';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: clamp(12px, 2.5vw, 14px);
+        font-weight: bold;
+        z-index: 3;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+    }
 }
 
-.change-fact-button:active {
-    transform: translateY(0px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+/* Media query para pantallas medianas (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .button-container {
+        bottom: clamp(20px, 4vh, 30px);
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        justify-content: center;
+        width: 90%;
+        max-width: 400px;
+        gap: clamp(10px, 2vw, 15px);
+    }
+    
+    .change-button, .change-fact-button {
+        padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
+        min-width: clamp(80px, 15vw, 120px);
+        border-radius: 25px;
+    }
+    
+    .change-button::after {
+        content: 'Cambiar Animal';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: clamp(12px, 2.5vw, 14px);
+        font-weight: bold;
+        z-index: 3;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+    }
+    
+    .change-fact-button::after {
+        content: 'Dato';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: clamp(12px, 2.5vw, 14px);
+        font-weight: bold;
+        z-index: 3;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+    }
+    
+    .change-button:hover, .change-fact-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    
+    .change-button:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+    
+    .change-fact-button:hover {
+        background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    }
+    
+    .change-button:active, .change-fact-button:active {
+        transform: translateY(0px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
 }
 
-.change-fact-button::before {
+/* Media query para pantallas pequeñas (< 480px) */
+@media (max-width: 479px) {
+    .button-container {
+        position: absolute !important;
+        top: 50% !important;
+        right: 15px !important;
+        transform: translateY(-50%) !important;
+        bottom: auto !important;
+        left: auto !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        max-width: 50px !important;
+        width: auto !important;
+        gap: 10px !important;
+    }
+    
+    .change-button, .change-fact-button {
+        width: 45px !important;
+        height: 45px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        min-width: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 auto !important;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+    }
+    
+    .change-fact-button {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .change-button::after {
+        content: '🐠' !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        font-size: 22px !important;
+        z-index: 3 !important;
+        color: white !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .change-fact-button::after {
+        content: '💬' !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        font-size: 22px !important;
+        z-index: 3 !important;
+        color: white !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .change-button:hover, .change-fact-button:hover {
+        transform: scale(1.15) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .change-button:active, .change-fact-button:active {
+        transform: scale(0.9) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+}
+
+/* Efectos de hover generales */
+.change-button::before, .change-fact-button::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    border-radius: 50px;
-    z-index: -1;
-    opacity: 0.8;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: inherit;
+    opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 1;
 }
 
-.change-fact-button:hover::before {
+.change-button:hover::before, .change-fact-button:hover::before {
     opacity: 1;
 }
 

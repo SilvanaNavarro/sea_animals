@@ -36,11 +36,11 @@
         "facts": [
             "Viven hasta 150 años",
             "Navegan usando campos magnéticos",
-            "Regresan a su nacimiento",
-            "Cuello se retrae dentro",
-            "Pueden contener la respiración",
+            "Regresan al lugar de su nacimiento",
+            "Su cuello se retrae dentro del caparazón",
+            "Pueden contener la respiración hasta 7 horas",
             "Comen medusas y algas",
-            "Sus huevos son redondos",
+            "Ponen hasta 150 huevos por nido",
             "Tienen patas como aletas",
             "Migran 10,000 km",
             "Son reptiles ancestrales"
@@ -51,11 +51,11 @@
         "name": "Pulpo Azul",
         "facts": [
             "Tiene 3 corazones",
-            "Sangre azul por cobre",
+            "Tiene sangre azul debido al cobre",
             "Cambian de color",
             "Tienen 8 brazos",
             "Son muy inteligentes",
-            "Pueden caminar",
+            "Pueden caminar apoyados en sus tentáculos",
             "Escapan fácilmente",
             "Viven 1-2 años",
             "Comen cangrejos",
@@ -84,13 +84,12 @@
         "facts": [
             "Son animales no plantas",
             "Viven en colonias",
-            "Alimentan con plancton",
+            "Se alimentan con plancton",
             "Producen oxígeno",
-            "Hogar para peces",
+            "Son hogar para peces",
             "Crecen muy lentamente",
             "Viven 5000 años",
-            "Cambio climático los afecta",
-            "Tienen simbiosis",
+            "El cambio climático los afecta",
             "Forman arrecifes"
         ],
         "imageUrl": "https://media.gq.com.mx/photos/60b24136fe7c1331bb8120a0/4:3/w_2664,h_1998,c_limit/arrecife-coral-especial_orig.jpg"
@@ -98,7 +97,7 @@
     {
         "name": "Ballena Jorobada",
         "facts": [
-            "Son los animales más grandes",
+            "Son los animales más grandes del mundo",
             "Cantan canciones complejas",
             "Saltan fuera del agua",
             "Viven 90 años",
@@ -106,7 +105,7 @@
             "Comen krill",
             "Tienen bigotes filtrantes",
             "Nacen con 5 metros",
-            "Pueden sumergirse 500m",
+            "Pueden sumergirse 500 metros",
             "Son mamíferos"
         ],
         "imageUrl": "https://fotografias.lasexta.com/clipping/cmsimages01/2013/06/08/60D56AC5-488C-4632-BB4C-69D1D9C6F7F5/69.jpg?crop=1000,563,x0,y55&width=1280&height=720&optimize=low&format=jpg"
@@ -117,12 +116,12 @@
             "Tienen 5 brazos",
             "Regeneran partes",
             "Comen mejillones",
-            "Mueven agua con brazos",
+            "Mueven agua con sus brazos",
             "Viven 35 años",
             "No tienen cerebro",
-            "Tienen pies ambulacrales",
+            "Tienen pies les permiten moverse, comer y respirar",
             "Caminan boca abajo",
-            "Tienen ojos en puntas",
+            "Tienen ojos en las puntas",
             "Sienten con tacto"
         ],
         "imageUrl": "https://www.bigfish.mx/__export/1750538943482/sites/debate/img/2025/06/21/estrellas_de_mar.jpg_1902800913.jpg"
