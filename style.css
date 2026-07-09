@@ -80,7 +80,8 @@ body {
     }
 }
 
-.sea-creature-container {
+/* Contenedor principal de contenido */
+.main-content {
     position: relative;
     width: 100%;
     height: 100%;
@@ -89,6 +90,22 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 10;
+    padding: 20px;
+}
+
+/* Contenedor de información del animal */
+.animal-info-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    z-index: 11;
+    padding: 20px;
 }
 
 .animal-image {
@@ -104,13 +121,14 @@ body {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.2);
+    order: 2;
 }
 
 .animal-name {
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(15px);
     border-radius: 15px;
@@ -131,13 +149,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 15px auto;
+    max-width: 90%;
+    order: 1;
 }
 
 .fun-facts {
-    position: absolute;
-    bottom: clamp(140px, 25vh, 200px);
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
     border-radius: 15px;
@@ -149,10 +170,12 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.3);
     max-width: clamp(70%, 85vw, 80%);
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s ease;
     line-height: 1.4;
     z-index: 12;
+    margin: 15px auto;
+    order: 3;
 }
 
 @keyframes pulse {
@@ -176,67 +199,233 @@ body {
     }
 }
 
-/* Efecto de partículas marinas */
+/* Algas marinas mejoradas */
 .seaweed {
     position: absolute;
     bottom: 0;
-    width: 20px;
-    height: 100px;
-    background: linear-gradient(to top, #2d5016, #4a7c59);
-    border-radius: 10px 10px 0 0;
-    animation: sway 4s ease-in-out infinite;
+    width: 0;
+    height: 0;
+    transform-origin: bottom center;
+    animation: sway 6s ease-in-out infinite;
 }
 
-.seaweed:nth-child(1) {
-    left: 10%;
+/* Alga tipo 1 - Forma curva */
+.seaweed-type1 {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 120px solid #2d5016;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.seaweed-type1::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -6px;
+    width: 12px;
+    height: 20px;
+    background: #1a3d0f;
+    border-radius: 50% 50% 0 0;
+}
+
+.seaweed-type1::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 30px solid #3d6b2a;
+}
+
+/* Alga tipo 2 - Forma ondulada */
+.seaweed-type2 {
+    width: 15px;
+    height: 100px;
+    background: linear-gradient(to top, #1a3d0f 0%, #2d5016 30%, #4a7c59 70%, #6fa368 100%);
+    border-radius: 50% 50% 0 0;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+.seaweed-type2::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -8px;
+    width: 6px;
+    height: 40px;
+    background: #3d6b2a;
+    border-radius: 50%;
+    transform: rotate(-15deg);
+}
+
+.seaweed-type2::after {
+    content: '';
+    position: absolute;
+    top: 35px;
+    right: -8px;
+    width: 6px;
+    height: 35px;
+    background: #3d6b2a;
+    border-radius: 50%;
+    transform: rotate(20deg);
+}
+
+/* Alga tipo 3 - Forma de pluma */
+.seaweed-type3 {
+    width: 20px;
     height: 80px;
+    background: linear-gradient(45deg, #2d5016 0%, #4a7c59 50%, #6fa368 100%);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.seaweed-type3::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 60px;
+    background: #1a3d0f;
+    border-radius: 1px;
+}
+
+.seaweed-type3::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 2px;
+    background: #3d6b2a;
+    border-radius: 1px;
+}
+
+/* Alga tipo 4 - Forma de espiral */
+.seaweed-type4 {
+    width: 12px;
+    height: 90px;
+    background: linear-gradient(to top, #1a3d0f, #2d5016, #4a7c59);
+    border-radius: 50% 50% 0 0;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+}
+
+.seaweed-type4::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: #3d6b2a;
+    border-radius: 50%;
+    box-shadow: 0 15px 0 #3d6b2a, 0 30px 0 #3d6b2a, 0 45px 0 #3d6b2a;
+}
+
+/* Animaciones mejoradas */
+@keyframes sway {
+    0%, 100% { 
+        transform: rotate(-8deg) scaleY(1);
+    }
+    25% { 
+        transform: rotate(-3deg) scaleY(1.02);
+    }
+    50% { 
+        transform: rotate(5deg) scaleY(0.98);
+    }
+    75% { 
+        transform: rotate(2deg) scaleY(1.01);
+    }
+}
+
+@keyframes gentle-sway {
+    0%, 100% { 
+        transform: rotate(-5deg) scaleX(1);
+    }
+    50% { 
+        transform: rotate(3deg) scaleX(1.05);
+    }
+}
+
+@keyframes wave-sway {
+    0%, 100% { 
+        transform: rotate(-6deg) scaleY(1);
+    }
+    33% { 
+        transform: rotate(2deg) scaleY(1.03);
+    }
+    66% { 
+        transform: rotate(-2deg) scaleY(0.97);
+    }
+}
+
+/* Posicionamiento de algas individuales */
+.seaweed:nth-child(1) {
+    left: 8%;
     animation-delay: 0s;
+    animation-duration: 7s;
 }
 
 .seaweed:nth-child(2) {
-    left: 25%;
-    height: 120px;
-    animation-delay: 1s;
+    left: 22%;
+    animation-delay: 1.5s;
+    animation-duration: 8s;
 }
 
 .seaweed:nth-child(3) {
-    left: 40%;
-    height: 90px;
-    animation-delay: 2s;
+    left: 35%;
+    animation-delay: 0.8s;
+    animation-duration: 6s;
 }
 
 .seaweed:nth-child(4) {
-    left: 65%;
-    height: 110px;
-    animation-delay: 0.5s;
+    left: 58%;
+    animation-delay: 2s;
+    animation-duration: 9s;
 }
 
 .seaweed:nth-child(5) {
-    left: 80%;
-    height: 100px;
-    animation-delay: 1.5s;
+    left: 75%;
+    animation-delay: 1.2s;
+    animation-duration: 7.5s;
 }
 
-@keyframes sway {
-    0%, 100% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
+.seaweed:nth-child(6) {
+    left: 88%;
+    animation-delay: 0.5s;
+    animation-duration: 8.5s;
 }
 
-/* Contenedor de botones - diseño base para pantallas ≥ 480px */
-.button-container {
-    position: absolute;
-    bottom: clamp(20px, 4vh, 30px);
-    left: 50%;
-    transform: translateX(-50%);
+.seaweed:nth-child(7) {
+    left: 12%;
+    animation-delay: 3s;
+    animation-duration: 6.5s;
+}
+
+.seaweed:nth-child(8) {
+    left: 45%;
+    animation-delay: 2.5s;
+    animation-duration: 7.8s;
+}
+
+/* Contenedor de controles separado */
+.controls-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
     display: flex;
     flex-direction: row;
     gap: clamp(10px, 2vw, 15px);
+    justify-content: center;
     z-index: 20;
     flex-wrap: wrap;
-    justify-content: center;
     padding: 0 10px;
-    max-width: 90%;
-    width: 400px;
 }
 
 /* Estilos base para ambos botones */
@@ -275,9 +464,15 @@ body {
 
 /* Media query para pantallas grandes (≥ 768px) - mantiene diseño base rectangular */
 @media (min-width: 768px) {
-    /* No se modifica el diseño base, mantiene los estilos de botones rectangulares con texto */
-    .button-container {
-        /* Mantiene los estilos base definidos anteriormente */
+    .animal-info-container {
+        margin-bottom: 100px;
+    }
+    
+    .controls-container {
+        position: absolute;
+        bottom: clamp(30px, 5vh, 40px);
+        left: 50%;
+        transform: translateX(-50%);
     }
     
     /* Texto completo para pantallas grandes */
@@ -308,11 +503,30 @@ body {
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         white-space: nowrap;
     }
+    
+    /* Botón Trivia en pantallas grandes */
+    .trivia-button {
+        top: 30px;
+        right: 30px;
+        padding: 12px 24px;
+        font-size: 14px;
+        min-width: 90px;
+        z-index: 30;
+    }
+    
+    .trivia-button::after {
+        content: 'Trivia';
+        font-size: 14px;
+    }
 }
 
 /* Media query para pantallas medianas (480px - 767px) */
 @media (min-width: 480px) and (max-width: 767px) {
-    .button-container {
+    .animal-info-container {
+        margin-bottom: 60px;
+    }
+    
+    .controls-container {
         bottom: clamp(20px, 4vh, 30px);
         left: 50%;
         transform: translateX(-50%);
@@ -374,11 +588,46 @@ body {
         transform: translateY(0px);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     }
+    
+    /* Ajustes para que nombre y datos queden centrados pero no cubran la imagen */
+    .animal-name {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin: 15px auto !important;
+        text-align: center !important;
+        max-width: 80% !important;
+        z-index: 12 !important;
+        order: 1 !important;
+    }
+    
+    .fun-facts {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin: 15px auto !important;
+        text-align: center !important;
+        max-width: 85% !important;
+        z-index: 12 !important;
+        opacity: 1 !important;
+        order: 3 !important;
+    }
 }
 
 /* Media query para pantallas pequeñas (< 480px) */
 @media (max-width: 479px) {
-    .button-container {
+    .main-content {
+        padding: 10px;
+    }
+    
+    .animal-info-container {
+        margin-bottom: 60px;
+        position: relative;
+    }
+    
+    .controls-container {
         position: absolute !important;
         top: 50% !important;
         right: 15px !important;
@@ -390,6 +639,30 @@ body {
         max-width: 50px !important;
         width: auto !important;
         gap: 10px !important;
+    }
+    
+    /* Ajustes para que nombre y datos no cubran la imagen */
+    .animal-name {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin-top: 15px !important;
+        margin-bottom: 10px !important;
+        z-index: 12 !important;
+        order: 1 !important;
+    }
+    
+    .fun-facts {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin-top: 10px !important;
+        margin-bottom: 15px !important;
+        z-index: 12 !important;
+        opacity: 1 !important;
+        order: 3 !important;
     }
     
     .change-button, .change-fact-button {
@@ -520,4 +793,544 @@ body {
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
+}
+
+/* Botón Trivia */
+.trivia-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: transparent;
+    border: none;
+    padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 20px);
+    font-size: clamp(11px, 2vw, 13px);
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    min-width: clamp(70px, 12vw, 100px);
+    text-transform: uppercase;
+    letter-spacing: clamp(0.5px, 1vw, 1px);
+    z-index: 25;
+}
+
+.trivia-button::after {
+    content: 'Trivia';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: clamp(11px, 2vw, 13px);
+    font-weight: bold;
+    z-index: 3;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+
+.trivia-button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.trivia-button:active {
+    transform: translateY(0px) scale(0.98);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Media query para botón Trivia en pantallas grandes */
+@media (min-width: 768px) {
+    .trivia-button::after {
+        content: 'Trivia';
+    }
+}
+
+/* Media query para botón Trivia en pantallas pequeñas */
+@media (max-width: 479px) {
+    .trivia-button {
+        width: 35px !important;
+        height: 35px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        min-width: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        top: 15px !important;
+        right: 15px !important;
+        z-index: 30 !important;
+    }
+    
+    .trivia-button::after {
+        content: '❓' !important;
+        font-size: 16px !important;
+    }
+    
+    .trivia-button:hover {
+        transform: scale(1.1) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .trivia-button:active {
+        transform: scale(0.9) !important;
+    }
+}
+
+/* Ventana de Trivia */
+.trivia-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.trivia-modal.active {
+    display: flex;
+}
+
+.trivia-content {
+    background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #004080 100%);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.4s ease-out;
+}
+
+.close-trivia {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.close-trivia:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.trivia-question {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.trivia-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.trivia-option {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.trivia-option:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.trivia-option.correct {
+    background: rgba(76, 175, 80, 0.3);
+    border-color: #4CAF50;
+    animation: correctPulse 0.6s ease;
+}
+
+.trivia-option.incorrect {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: #f44336;
+    animation: shake 0.5s ease;
+}
+
+.trivia-result {
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    animation: fadeIn 0.3s ease;
+}
+
+.trivia-result.success {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+
+.trivia-result.error {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+    border: 2px solid #f44336;
+}
+
+/* Animaciones para Trivia */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Celebración marina */
+.celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.fish {
+    position: absolute;
+    font-size: 30px;
+    animation: swim 3s ease-in-out infinite;
+}
+
+.starfish {
+    position: absolute;
+    font-size: 25px;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+.bubble-celebration {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: bubble-rise-celebration 4s ease-in-out infinite;
+}
+
+@keyframes swim {
+    0% { transform: translateX(-100px) translateY(0px) rotate(0deg); }
+    25% { transform: translateX(25vw) translateY(-20px) rotate(10deg); }
+    50% { transform: translateX(50vw) translateY(10px) rotate(-5deg); }
+    75% { transform: translateX(75vw) translateY(-15px) rotate(5deg); }
+    100% { transform: translateX(calc(100vw + 100px)) translateY(0px) rotate(0deg); }
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+}
+
+@keyframes bubble-rise-celebration {
+    0% {
+        bottom: -50px;
+        transform: translateX(0px) scale(0.5);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        bottom: 110vh;
+        transform: translateX(50px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Corales decorativos */
+.coral {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.coral-type1 {
+    left: 5%;
+    width: 60px;
+    height: 80px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53, #ff6b9d);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    border-radius: 10px 10px 0 0;
+    animation: coral-sway 8s ease-in-out infinite;
+}
+
+.coral-type1::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 15px;
+    background: #ff8e53;
+    border-radius: 50%;
+    box-shadow: -20px 10px 0 #ff6b9d, 20px 10px 0 #ff6b6b;
+}
+
+.coral-type2 {
+    left: 15%;
+    width: 40px;
+    height: 60px;
+    background: linear-gradient(135deg, #4ecdc4, #44a08d, #096b68);
+    border-radius: 50% 50% 0 0;
+    animation: coral-sway 10s ease-in-out infinite reverse;
+}
+
+.coral-type2::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: #44a08d;
+    border-radius: 50%;
+    box-shadow: -15px 8px 0 #096b68, 15px 8px 0 #4ecdc4;
+}
+
+.coral-type3 {
+    left: 25%;
+    width: 50px;
+    height: 70px;
+    background: linear-gradient(90deg, #f093fb, #f5576c, #f093fb);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+    animation: coral-sway 12s ease-in-out infinite;
+}
+
+.coral-type3::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: #f5576c;
+    border-radius: 50%;
+    box-shadow: -18px 12px 0 #f093fb, 18px 12px 0 #f5576c;
+}
+
+.coral-type4 {
+    left: 35%;
+    width: 45px;
+    height: 65px;
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+    border-radius: 50% 50% 0 0;
+    animation: coral-sway 9s ease-in-out infinite reverse;
+}
+
+.coral-type4::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: #764ba2;
+    border-radius: 50%;
+    box-shadow: -16px 10px 0 #667eea, 16px 10px 0 #764ba2;
+}
+
+.coral-type5 {
+    left: 45%;
+    width: 55px;
+    height: 75px;
+    background: linear-gradient(135deg, #ffecd2, #fcb69f, #ff8a80);
+    clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+    animation: coral-sway 11s ease-in-out infinite;
+}
+
+.coral-type5::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    background: #fcb69f;
+    border-radius: 50%;
+    box-shadow: -20px 11px 0 #ff8a80, 20px 11px 0 #ffecd2;
+}
+
+/* Pececitos decorativos */
+.small-fish {
+    position: absolute;
+    font-size: 20px;
+    z-index: 2;
+    animation: fish-swim 15s linear infinite;
+}
+
+.fish-type1 {
+    top: 20%;
+    left: -50px;
+    animation-delay: 0s;
+}
+
+.fish-type2 {
+    top: 40%;
+    left: -50px;
+    animation-delay: 3s;
+}
+
+.fish-type3 {
+    top: 60%;
+    left: -50px;
+    animation-delay: 6s;
+}
+
+.fish-type4 {
+    top: 30%;
+    left: -50px;
+    animation-delay: 9s;
+}
+
+.fish-type5 {
+    top: 50%;
+    left: -50px;
+    animation-delay: 12s;
+}
+
+@keyframes coral-sway {
+    0%, 100% { 
+        transform: rotate(-3deg) scale(1);
+    }
+    50% { 
+        transform: rotate(3deg) scale(1.02);
+    }
+}
+
+@keyframes fish-swim {
+    0% {
+        left: -50px;
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        left: 25vw;
+        transform: translateY(-10px) rotate(5deg);
+    }
+    50% {
+        left: 50vw;
+        transform: translateY(5px) rotate(-3deg);
+    }
+    75% {
+        left: 75vw;
+        transform: translateY(-8px) rotate(2deg);
+    }
+    100% {
+        left: calc(100vw + 50px);
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+/* Botón Siguiente Pregunta - Solo flecha */
+.next-question {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none; /* Ocultar inicialmente */
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.next-question:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.next-question:active {
+    transform: scale(0.95) rotate(-2deg);
+}
+
+/* Mensaje de advertencia */
+.trivia-result.warning {
+    background: linear-gradient(45deg, #feca57, #ff9ff3);
+    color: #2c2c2c;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    font-weight: bold;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }

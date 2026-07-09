@@ -125,5 +125,85 @@
             "Sienten con tacto"
         ],
         "imageUrl": "https://www.bigfish.mx/__export/1750538943482/sites/debate/img/2025/06/21/estrellas_de_mar.jpg_1902800913.jpg"
+    },
+    {
+        "name": "Pez Rape Abisal",
+        "facts": [
+            "Tienen una luz bioluminiscente",
+            "Viven hasta a 4000 metros de profundidad",
+            "Tienen dientes afilados",
+            "Pueden tragar presas más grandes que ellos",
+            "Son depredadores solitarios",
+            "Tienen cuerpos blandos",
+            "Se reproducen con fertilización externa",
+            "Viven hasta 25 años",
+            "Se alimentan de peces y crustáceos",
+            "Tienen una mandíbula extensible"
+        ],
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJIEYfOelFdVIvvgqxxqCOk3-XFKqJB6bHVeE6QgUOyg&s=10"
+    },
+    {
+        "name": "Caballito de Mar",
+        "facts": [
+            "Los machos llevan los huevos",
+            "Tienen cola prensil",
+            "Se camuflan con el entorno",
+            "Nadan verticalmente",
+            "Tienen ojos independientes",
+            "Son los peces más lentos del mundo",
+            "Viven en aguas cálidas",
+            "Se alimentan de pequeños crustáceos",
+            "Tienen un cuerpo rígido",
+            "Son monógamos"
+        ],
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQix3_KmRsozO8uyZdvJlR-hWSpeh7S8SeC_LT5anVNvk3OPmY9ccHAHKk&s=10"
+    },
+    {
+        "name": "Medusa Luna",
+        "facts": [
+            "Existen desde hace 500 millones de años",
+            "Tienen tentáculos urticantes",
+            "Viven hasta 6 meses",
+            "Se reproducen sexual y asexualmente",
+            "Se alimentan de plancton",
+            "Tienen un cuerpo gelatinoso",
+            "Pueden flotar con las corrientes",
+            "No tienen cerebro ni corazón",
+            "Tienen simetría radial",
+            "Son depredadores pasivos"
+        ],
+        "imageUrl": "https://assets.montereybayaquarium.org/general/images/animals/invertebrates/moon-jellies-TR25-0514.png?mode=crop&pos=center-center&w=440&h=293&c=c6186da5&v=9d50b82e726d3bb92da3c3a4a7934fd741d085a7ff6838ef7a2e52de7ef8ae83"
+    },
+    {
+        "name": "Orca",
+        "facts": [
+            "Son mamíferos marinos",
+            "Viven en grupos familiares",
+            "Cazan coordinando estrategias en equipo",
+            "Tienen dientes afilados",
+            "Pueden nadar a 56 km/h",
+            "Se comunican con sonidos complejos",
+            "Viven hasta 80 años",
+            "Se alimentan de peces y mamíferos marinos",
+            "Tienen un cerebro grande.",
+            "Las abuelas lideran al grupo"
+        ],
+        "imageUrl": "https://cdn.shopify.com/s/files/1/0996/1022/files/d288d36f-ae67-45e9-b623-d38a27d5471cc91c90b5db50d83c6f_Orca_pod_GettyImages-1498720163.jpg?v=1708624320"
+    },
+    {
+        "name":"Calamar Colosal",
+        "facts":[
+            "Pueden crecer hasta 10 metros",
+            "Tienen ojos del tamaño de un balón de fútbol",
+            "Viven en aguas profundas hasta 2000 metros",
+            "Tienen 8 brazos y 2 tentáculos",
+            "Se alimentan de peces y otros calamares",
+            "Tienen un pico afilado",
+            "Pueden cambiar de color",
+            "Tienen ganchos giratorios en los tentáculos",
+            "Ponen huevos en el fondo del mar",
+            "Son difíciles de estudiar debido a su hábitat"
+        ],
+        "imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Le7hMwmtoqshkswOiJgI765hzuVXN_rZszfxRFzkvA&s=10"
     }
 ]

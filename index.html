@@ -8,21 +8,52 @@
 </head>
 <body>
     <div class="ocean-background">
+        <!-- Burbujas -->
         <div class="bubble"></div>
         <div class="bubble"></div>
         <div class="bubble"></div>
         <div class="bubble"></div>
         <div class="bubble"></div>
         
-        <div class="sea-creature-container">
-            <div id="animal-image" class="animal-image"></div>
-            <div id="animal-name" class="animal-name"></div>
-            <div id="fun-facts" class="fun-facts"></div>
+        <!-- Corales decorativos -->
+        <div class="coral coral-type1"></div>
+        <div class="coral coral-type2"></div>
+        <div class="coral coral-type3"></div>
+        <div class="coral coral-type4"></div>
+        <div class="coral coral-type5"></div>
+        
+        <!-- Pececitos decorativos -->
+        <div class="small-fish fish-type1"></div>
+        <div class="small-fish fish-type2"></div>
+        <div class="small-fish fish-type3"></div>
+        <div class="small-fish fish-type4"></div>
+        <div class="small-fish fish-type5"></div>
+        
+        <div class="main-content">
+            <!-- Contenedor de información del animal -->
+            <div class="animal-info-container">
+                <div id="animal-name" class="animal-name"></div>
+                <div id="animal-image" class="animal-image"></div>
+                <div id="fun-facts" class="fun-facts"></div>
+                <button id="trivia-btn" class="trivia-button">Trivia</button>
+            </div>
+            
+            <!-- Contenedor de controles separado -->
+            <div class="controls-container">
+                <button id="change-btn" class="change-button">Cambiar Animal</button>
+                <button id="change-fact-btn" class="change-fact-button">Cambiar Dato Curioso</button>
+            </div>
         </div>
         
-        <div class="button-container">
-            <button id="change-btn" class="change-button">Cambiar Animal</button>
-            <button id="change-fact-btn" class="change-fact-button">Cambiar Dato Curioso</button>
+        <!-- Ventana de Trivia -->
+        <div id="trivia-modal" class="trivia-modal">
+            <div class="trivia-content">
+                <button id="close-trivia" class="close-trivia">&times;</button>
+                <h2 id="trivia-question" class="trivia-question"></h2>
+                <div id="trivia-options" class="trivia-options"></div>
+                <div id="trivia-result" class="trivia-result"></div>
+                <button id="next-question" class="next-question">➡️</button>
+            </div>
         </div>
     </div>
     
