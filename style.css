@@ -990,10 +990,13 @@ body {
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
-    position: relative;
+    position: relative !important;
     border: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.4s ease-out;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
 }
 
 .close-trivia {
@@ -1027,6 +1030,14 @@ body {
     margin-bottom: 25px;
     text-align: center;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .trivia-options {
@@ -1034,6 +1045,11 @@ body {
     flex-direction: column;
     gap: 15px;
     margin-bottom: 25px;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100%;
 }
 
 .trivia-option {
@@ -1046,6 +1062,14 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .trivia-option:hover {
@@ -1074,6 +1098,14 @@ body {
     font-size: 18px;
     font-weight: bold;
     animation: fadeIn 0.3s ease;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .trivia-result.success {
@@ -1367,9 +1399,9 @@ body {
 
 /* Botón Siguiente Pregunta - Solo flecha */
 .next-question {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
+    position: absolute !important;
+    bottom: 15px !important;
+    right: 15px !important;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
     border: 2px solid rgba(255, 255, 255, 0.4);
     color: white;

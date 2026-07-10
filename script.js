@@ -7,9 +7,9 @@ let currentFactIndex = 0;
 let correctAnswersCount = 0;
 const PREMIOS = {
     5: "Ganaste un vaso de jugo! 🥤",
-    10: "Ganaste un dulce! 🍭",
-    15: "Ganaste 30 minutos de Youtube! 📱",
-    20: "Ganaste 1 hora de celular! 🎮"
+    15: "Ganaste un dulce! 🍭",
+    30: "Ganaste 30 minutos de Youtube! 📱",
+    45: "Ganaste 1 hora de celular! 🎮"
 };
 
 // Sistemas para evitar repeticiones
@@ -538,7 +538,14 @@ class TriviaSystem {
             correctAnswersCount++;
             
             // Verificar si hay premio
-            this.checkForPrize();
+            const premio = PREMIOS[correctAnswersCount];
+            if (premio) {
+                // Si hay premio, cerrar trivia y cambiar animal
+                this.showPrizeAndChangeAnimal(premio);
+            } else {
+                // Si no hay premio, seguir con la trivia
+                this.nextQuestion();
+            }
             
             // Celebración
             this.createCelebration();
@@ -561,8 +568,10 @@ class TriviaSystem {
             option.style.pointerEvents = 'none';
         });
         
-        // Mostrar botón "Siguiente Pregunta" después de responder
-        this.nextQuestionBtn.style.display = 'flex';
+        // Mostrar botón "Siguiente Pregunta" después de responder solo si no hay premio
+        if (!PREMIOS[correctAnswersCount]) {
+            this.nextQuestionBtn.style.display = 'flex';
+        }
     }
     
     createCelebration() {
@@ -690,6 +699,91 @@ class TriviaSystem {
         
         // Iniciar animación de peces nadando
         this.createPrizeFishAnimation();
+    }
+    
+    showPrizeAndChangeAnimal(premio) {
+        // Crear modal de premio si no existe
+        let prizeModal = document.getElementById('prize-modal');
+        if (!prizeModal) {
+            prizeModal = document.createElement('div');
+            prizeModal.id = 'prize-modal';
+            prizeModal.className = 'prize-modal';
+            prizeModal.innerHTML = `
+                <div class="prize-content">
+                    <h2>🎉 ¡FELICIDADES! 🎉</h2>
+                    <div class="prize-emoji">🏆</div>
+                    <p class="prize-text">${premio}</p>
+                    <button class="prize-close-btn">¡Siguiente Animal!</button>
+                </div>
+            `;
+            document.body.appendChild(prizeModal);
+            
+            // Agregar evento al botón de cerrar
+            const closeBtn = prizeModal.querySelector('.prize-close-btn');
+            closeBtn.addEventListener('click', () => {
+                prizeModal.classList.remove('active');
+                // Cambiar de animal después de cerrar el modal de premio
+                setTimeout(() => {
+                    this.closeTriviaModal();
+                    this.changeToNextAnimal();
+                }, 300);
+            });
+            
+            // Cerrar al hacer clic fuera
+            prizeModal.addEventListener('click', (e) => {
+                if (e.target === prizeModal) {
+                    prizeModal.classList.remove('active');
+                    // Cambiar de animal después de cerrar el modal de premio
+                    setTimeout(() => {
+                        this.closeTriviaModal();
+                        this.changeToNextAnimal();
+                    }, 300);
+                }
+            });
+        } else {
+            // Si el modal ya existe, actualizar el contenido y eliminar eventos anteriores
+            const prizeText = prizeModal.querySelector('.prize-text');
+            prizeText.textContent = premio;
+            
+            // Eliminar el botón anterior y crear uno nuevo para evitar acumulación de eventos
+            const closeBtn = prizeModal.querySelector('.prize-close-btn');
+            const newCloseBtn = closeBtn.cloneNode(true);
+            closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+            
+            // Agregar evento al nuevo botón usando la referencia global triviaSystem
+            newCloseBtn.addEventListener('click', () => {
+                prizeModal.classList.remove('active');
+                // Cambiar de animal después de cerrar el modal de premio
+                setTimeout(() => {
+                    this.closeTriviaModal();
+                    this.changeToNextAnimal();
+                }, 300);
+            });
+        }
+        
+        // Mostrar modal
+        prizeModal.classList.add('active');
+        
+        // Iniciar animación de peces nadando
+        this.createPrizeFishAnimation();
+    }
+    
+    changeToNextAnimal() {
+        // Cambiar al siguiente animal
+        changeCreature();
+        
+        // Mostrar mensaje de cambio de animal
+        const triviaResult = document.getElementById('trivia-result');
+        if (triviaResult) {
+            triviaResult.innerHTML = '¡Cambiamos a otro animal para que sigas aprendiendo! 🐠';
+            triviaResult.className = 'trivia-result success';
+            triviaResult.style.display = 'block';
+            
+            // Ocultar el mensaje después de 3 segundos
+            setTimeout(() => {
+                triviaResult.style.display = 'none';
+            }, 3000);
+        }
     }
     
     createPrizeFishAnimation() {
