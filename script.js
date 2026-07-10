@@ -3,6 +3,19 @@ let seaCreatures = [];
 let currentCreatureIndex = 0;
 let currentFactIndex = 0;
 
+// Contador de respuestas correctas
+let correctAnswersCount = 0;
+const PREMIOS = {
+    5: "Ganaste un vaso de jugo! 🥤",
+    10: "Ganaste un dulce! 🍭",
+    15: "Ganaste 30 minutos de Youtube! 📱",
+    20: "Ganaste 1 hora de celular! 🎮"
+};
+
+// Sistemas para evitar repeticiones
+let usedFacts = new Map(); // Mapa: animal -> Set de facts usados
+let usedQuestions = new Set(); // Set de preguntas ya usadas (string)
+
 // Función para cargar datos desde el archivo JSON
 async function loadSeaCreaturesData() {
     try {
@@ -29,10 +42,26 @@ function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Función para obtener un dato curioso aleatorio
+// Función para obtener un dato curioso aleatorio (sin repeticiones)
 function getRandomFact(creature) {
-    const randomIndex = getRandomNumber(0, creature.facts.length - 1);
-    return creature.facts[randomIndex];
+    if (!usedFacts.has(creature.name)) {
+        usedFacts.set(creature.name, new Set());
+    }
+    
+    const usedFactsForCreature = usedFacts.get(creature.name);
+    const availableFacts = creature.facts.filter(fact => !usedFactsForCreature.has(fact));
+    
+    // Si todos los facts ya se usaron, reiniciar el conjunto
+    if (availableFacts.length === 0) {
+        usedFactsForCreature.clear();
+        return creature.facts[0]; // Devolver el primer fact
+    }
+    
+    const randomIndex = getRandomNumber(0, availableFacts.length - 1);
+    const selectedFact = availableFacts[randomIndex];
+    usedFactsForCreature.add(selectedFact);
+    
+    return selectedFact;
 }
 
 // Función para mostrar información de un animal específico
@@ -275,47 +304,158 @@ class TriviaSystem {
     
     generateQuestion(creature) {
         const facts = creature.facts;
-        const correctFact = facts[Math.floor(Math.random() * facts.length)];
-        
-        // Crear pregunta base con el nombre del animal
+
+        if (facts.length === 0) {
+            const randomCreature = seaCreatures[Math.floor(Math.random() * seaCreatures.length)];
+            return this.generateQuestion(randomCreature);
+        }
+
+        // Seleccionar fact correcto no usado recientemente
+        let correctFact;
+        const availableFacts = facts.filter(fact => !usedQuestions.has(`${creature.name}: ${fact}`));
+
+        if (availableFacts.length === 0) {
+            usedQuestions.clear();
+            correctFact = facts[0];
+        } else {
+            correctFact = availableFacts[Math.floor(Math.random() * availableFacts.length)];
+        }
+        usedQuestions.add(`${creature.name}: ${correctFact}`);
+
+        // Opción 2: fact numérico → pregunta específica con distractores numéricos
+        const numericResult = this.tryNumericQuestion(correctFact, creature);
+        if (numericResult) return numericResult;
+
+        // Fact cualitativo → distractores de otros animales
         const question = `¿Qué dato es verdadero sobre el ${creature.name}?`;
-        
-        // Crear opciones asegurando solo una correcta
         const options = [correctFact];
-        const usedFacts = new Set([correctFact]);
-        
-        // Generar 3 opciones incorrectas diferentes
+        const usedOptions = new Set([correctFact]);
+
         while (options.length < 4) {
             let wrongFact;
-            const otherCreature = seaCreatures[Math.floor(Math.random() * seaCreatures.length)];
-            const availableFacts = otherCreature.facts.filter(fact => !usedFacts.has(fact));
-            
-            if (availableFacts.length > 0) {
-                wrongFact = availableFacts[Math.floor(Math.random() * availableFacts.length)];
-                usedFacts.add(wrongFact);
-                options.push(wrongFact);
-            } else {
-                // Si no hay más facts disponibles, crear una falsa
-                const questionType = this.getQuestionType(correctFact);
-                wrongFact = this.generateWrongFact(correctFact, questionType);
-                usedFacts.add(wrongFact);
-                options.push(wrongFact);
+            const otherCreatures = seaCreatures.filter(c => c.name !== creature.name);
+            const shuffled = otherCreatures.sort(() => Math.random() - 0.5);
+
+            let found = false;
+            for (const other of shuffled) {
+                const candidates = other.facts.filter(fact =>
+                    !usedOptions.has(fact) &&
+                    !creature.facts.includes(fact) &&
+                    !this.isSemanticallySimilar(fact, creature.facts)
+                );
+                if (candidates.length > 0) {
+                    wrongFact = candidates[Math.floor(Math.random() * candidates.length)];
+                    usedOptions.add(wrongFact);
+                    found = true;
+                    break;
+                }
             }
+
+            if (!found) {
+                wrongFact = this.generateWrongFact(correctFact, this.getQuestionType(correctFact));
+                usedOptions.add(wrongFact);
+            }
+
+            options.push(wrongFact);
         }
-        
-        // Mezclar opciones
+
         for (let i = options.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [options[i], options[j]] = [options[j], options[i]];
         }
-        
-        return {
-            question,
-            options,
-            correct: correctFact
+
+        return { question, options, correct: correctFact };
+    }
+
+    tryNumericQuestion(correctFact, creature) {
+        const pattern = /(\d[\d,.]*)(\s*)(km\/h|toneladas?|dientes|centímetros?|huevos?|metros?|horas?|años?|año|kg|km|sentidos?)\b/i;
+        const match = correctFact.match(pattern);
+        if (!match) return null;
+
+        const numStr  = match[1];
+        const gap     = match[2];
+        const unit    = match[3].toLowerCase();
+        const num     = parseFloat(numStr.replace(/,/g, ''));
+        if (!num || num <= 0) return null;
+
+        const wrongNums = this.generateWrongNumbers(num);
+        if (wrongNums.length < 3) return null;
+
+        // Construir opciones reemplazando solo el número en el texto original
+        const options = [correctFact];
+        for (const wn of wrongNums) {
+            const wnStr = wn >= 10000 ? wn.toLocaleString('es-CL') : String(wn);
+            const before  = correctFact.substring(0, match.index);
+            const rest    = correctFact.substring(match.index).replace(numStr, wnStr);
+            const wrongFact = before + rest;
+            if (!options.includes(wrongFact)) options.push(wrongFact);
+        }
+
+        if (options.length < 4) return null;
+
+        // Solo unidades inequívocas reciben pregunta específica.
+        // km, metros, kg, toneladas varían de contexto → pregunta genérica para evitar contradicciones.
+        const specificTemplates = {
+            'km/h':    `¿A qué velocidad puede nadar el ${creature.name}?`,
+            'años':    `¿Cuántos años puede vivir el ${creature.name}?`,
+            'año':     `¿Cuántos años puede vivir el ${creature.name}?`,
+            'dientes': `¿Cuántos dientes tiene el ${creature.name}?`,
+            'huevos':  `¿Cuántos huevos puede poner el ${creature.name}?`,
+            'horas':   `¿Cuántas horas puede aguantar el ${creature.name}?`,
         };
+        const question = specificTemplates[unit] || `¿Cuál de estos datos es correcto sobre el ${creature.name}?`;
+
+        for (let i = options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [options[i], options[j]] = [options[j], options[i]];
+        }
+
+        return { question, options: options.slice(0, 4), correct: correctFact };
+    }
+
+    generateWrongNumbers(correctNum) {
+        const multipliers = [0.1, 0.2, 0.3, 0.5, 2, 3, 5, 8, 10].sort(() => Math.random() - 0.5);
+        const results = [];
+        const seen = new Set([correctNum]);
+        for (const mult of multipliers) {
+            let n = Math.round(correctNum * mult);
+            if (n <= 0) n = 1;
+            if (seen.has(n)) continue;
+            seen.add(n);
+            results.push(n);
+            if (results.length === 3) break;
+        }
+        return results;
     }
     
+    getKeywords(fact) {
+        const normalize = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+        const stopwords = new Set([
+            'tiene', 'tienen', 'son', 'es', 'un', 'una', 'de', 'en', 'con',
+            'los', 'las', 'sus', 'por', 'que', 'del', 'al', 'el', 'la', 'y',
+            'o', 'a', 'se', 'no', 'mas', 'muy', 'hasta', 'como', 'pero', 'si',
+            'cuando', 'donde', 'porque', 'para', 'entre', 'sin', 'sobre',
+            'pueden', 'puede', 'viven', 'vive', 'su', 'les', 'lo', 'han',
+            'estan', 'esta', 'este', 'estos', 'otras', 'otra', 'otros', 'otro',
+            'cada', 'solo', 'tambien', 'debido'
+        ]);
+        return normalize(fact).toLowerCase()
+            .replace(/[^a-z\s]/g, ' ')
+            .split(/\s+/)
+            .filter(w => w.length > 3 && !stopwords.has(w));
+    }
+
+    isSemanticallySimilar(distractorFact, animalFacts) {
+        const dk = this.getKeywords(distractorFact);
+        if (dk.length === 0) return false;
+        for (const animalFact of animalFacts) {
+            const ak = this.getKeywords(animalFact);
+            const overlap = dk.filter(k => ak.includes(k)).length;
+            if (overlap >= 2 || (dk.length <= 2 && overlap >= 1)) return true;
+        }
+        return false;
+    }
+
     getQuestionContext(fact) {
         if (fact.includes('años')) return 'este dato sobre años';
         if (fact.includes('km') || fact.includes('metros')) return 'este dato sobre distancia';
@@ -328,13 +468,13 @@ class TriviaSystem {
     
     generateWrongFact(correctFact, questionType) {
         const wrongTemplates = {
-            'años': ['Vive hasta 20 años', 'Tiene una vida de 30 años', 'Puede vivir 50 años'],
-            'distancia': ['Puede nadar 100 km', 'Viaja 500 km', 'Nada a 2000 metros'],
-            'peso': ['Pesa 500 kg', 'Tiene un peso de 100 kg', 'Puede llegar a 1 tonelada'],
-            'medida': ['Tiene 50 dientes', 'Mide 10 metros', 'Tiene 20 centímetros'],
-            'velocidad': ['Nada a 20 km/h', 'Puede alcanzar 80 km/h', 'Tiene una velocidad de 15 km/h'],
-            'altura': ['Puede saltar 1 metro', 'Salta hasta 3 metros', 'Tiene una altura de 5 metros'],
-            'dato': ['Tiene características únicas', 'Es un animal especial', 'Tiene habilidades especiales']
+            'años': ['Vive hasta 20 años', 'Tiene una vida de 30 años', 'Puede vivir 50 años', 'Vive solo 5 años'],
+            'distancia': ['Puede nadar 100 km', 'Viaja 500 km', 'Nada a 2000 metros', 'Viaja 1000 km'],
+            'peso': ['Pesa 500 kg', 'Tiene un peso de 100 kg', 'Puede llegar a 1 tonelada', 'Pesa 2 toneladas'],
+            'medida': ['Tiene 50 dientes', 'Mide 10 metros', 'Tiene 20 centímetros', 'Mide 5 metros'],
+            'velocidad': ['Nada a 20 km/h', 'Puede alcanzar 80 km/h', 'Tiene una velocidad de 15 km/h', 'Nada a 25 km/h'],
+            'altura': ['Puede saltar 1 metro', 'Salta hasta 3 metros', 'Tiene una altura de 5 metros', 'Salta 2 metros'],
+            'dato': ['Tiene características únicas', 'Es un animal especial', 'Tiene habilidades especiales', 'Es muy común']
         };
         
         const templates = wrongTemplates[questionType] || wrongTemplates['dato'];
@@ -393,6 +533,12 @@ class TriviaSystem {
             button.classList.add('correct');
             this.triviaResult.innerHTML = '¡Correcto! 🎉';
             this.triviaResult.className = 'trivia-result success';
+            
+            // Incrementar contador de respuestas correctas
+            correctAnswersCount++;
+            
+            // Verificar si hay premio
+            this.checkForPrize();
             
             // Celebración
             this.createCelebration();
@@ -476,6 +622,180 @@ class TriviaSystem {
             celebration.remove();
         }
     }
+    
+    checkForPrize() {
+        const premio = PREMIOS[correctAnswersCount];
+        if (premio) {
+            setTimeout(() => {
+                this.showPrizeModal(premio);
+            }, 1000);
+        }
+    }
+    
+    showPrizeModal(premio) {
+        // Crear modal de premio si no existe
+        let prizeModal = document.getElementById('prize-modal');
+        if (!prizeModal) {
+            prizeModal = document.createElement('div');
+            prizeModal.id = 'prize-modal';
+            prizeModal.className = 'prize-modal';
+            prizeModal.innerHTML = `
+                <div class="prize-content">
+                    <h2>🎉 ¡FELICIDADES! 🎉</h2>
+                    <div class="prize-emoji">🏆</div>
+                    <p class="prize-text">${premio}</p>
+                    <button class="prize-close-btn">Continuar Jugando</button>
+                </div>
+            `;
+            document.body.appendChild(prizeModal);
+            
+            // Agregar evento al botón de cerrar
+            const closeBtn = prizeModal.querySelector('.prize-close-btn');
+            closeBtn.addEventListener('click', () => {
+                prizeModal.classList.remove('active');
+                // Volver a abrir la trivia después de cerrar el modal de premio
+                setTimeout(() => {
+                    triviaSystem.openTrivia();
+                }, 300);
+            });
+            
+            // Cerrar al hacer clic fuera
+            prizeModal.addEventListener('click', (e) => {
+                if (e.target === prizeModal) {
+                    prizeModal.classList.remove('active');
+                }
+            });
+        } else {
+            // Si el modal ya existe, actualizar el contenido y eliminar eventos anteriores
+            const prizeText = prizeModal.querySelector('.prize-text');
+            prizeText.textContent = premio;
+            
+            // Eliminar el botón anterior y crear uno nuevo para evitar acumulación de eventos
+            const closeBtn = prizeModal.querySelector('.prize-close-btn');
+            const newCloseBtn = closeBtn.cloneNode(true);
+            closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+            
+            // Agregar evento al nuevo botón usando la referencia global triviaSystem
+            newCloseBtn.addEventListener('click', () => {
+                prizeModal.classList.remove('active');
+                // Volver a abrir la trivia después de cerrar el modal de premio
+                setTimeout(() => {
+                    triviaSystem.openTrivia();
+                }, 300);
+            });
+        }
+        
+        // Mostrar modal
+        prizeModal.classList.add('active');
+        
+        // Iniciar animación de peces nadando
+        this.createPrizeFishAnimation();
+    }
+    
+    createPrizeFishAnimation() {
+        const fishTypes = ['🐠', '🐟', '🐡', '🦈', '🐙', '🐋', '🐳', '🦭'];
+        
+        // Asegurarse de que el modal de premio esté visible para que los peces se vean bien
+        const prizeModal = document.getElementById('prize-modal');
+        if (prizeModal) {
+            prizeModal.style.zIndex = '2001'; // Asegurar que el modal esté debajo de los peces
+        }
+        
+        // Crear peces nadando horizontalmente
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const fish = document.createElement('div');
+                fish.className = 'prize-fish prize-fish-horizontal';
+                fish.textContent = fishTypes[Math.floor(Math.random() * fishTypes.length)];
+                fish.style.top = `${15 + Math.random() * 60}%`;
+                fish.style.animationDelay = `${i * 0.5}s`;
+                fish.style.animationDuration = `${3 + Math.random() * 2}s`;
+                document.body.appendChild(fish);
+                
+                // Eliminar el pez después de la animación
+                setTimeout(() => {
+                    fish.remove();
+                }, 5000);
+            }, i * 800);
+        }
+        
+        // Crear peces nadando verticalmente
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                const fish = document.createElement('div');
+                fish.className = 'prize-fish prize-fish-vertical';
+                fish.textContent = fishTypes[Math.floor(Math.random() * fishTypes.length)];
+                fish.style.left = `${15 + Math.random() * 70}%`;
+                fish.style.animationDelay = `${i * 0.7}s`;
+                fish.style.animationDuration = `${4 + Math.random() * 2}s`;
+                document.body.appendChild(fish);
+                
+                // Eliminar el pez después de la animación
+                setTimeout(() => {
+                    fish.remove();
+                }, 6000);
+            }, i * 1000);
+        }
+        
+        // Crear peces nadando en diagonal
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+                const fish = document.createElement('div');
+                fish.className = 'prize-fish prize-fish-diagonal';
+                fish.textContent = fishTypes[Math.floor(Math.random() * fishTypes.length)];
+                fish.style.top = `${10 + Math.random() * 40}%`;
+                fish.style.left = `${10 + Math.random() * 40}%`;
+                fish.style.animationDelay = `${i * 0.6}s`;
+                fish.style.animationDuration = `${3.5 + Math.random() * 1.5}s`;
+                document.body.appendChild(fish);
+                
+                // Eliminar el pez después de la animación
+                setTimeout(() => {
+                    fish.remove();
+                }, 5500);
+            }, i * 900);
+        }
+        
+        // Crear cardumen de peces
+        setTimeout(() => {
+            const fishSchool = document.createElement('div');
+            fishSchool.className = 'fish-school';
+            
+            const schoolFishTypes = ['🐠', '🐟', '🐡'];
+            for (let i = 0; i < 4; i++) {
+                const fish = document.createElement('div');
+                fish.className = 'fish';
+                fish.textContent = schoolFishTypes[Math.floor(Math.random() * schoolFishTypes.length)];
+                fish.style.setProperty('--delay', i);
+                fishSchool.appendChild(fish);
+            }
+            
+            document.body.appendChild(fishSchool);
+            
+            // Eliminar el cardumen después de la animación
+            setTimeout(() => {
+                fishSchool.remove();
+            }, 5000);
+        }, 1000);
+        
+        // Crear peces saltarines
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                const fish = document.createElement('div');
+                fish.className = 'jumping-fish';
+                fish.textContent = fishTypes[Math.floor(Math.random() * fishTypes.length)];
+                fish.style.left = `${20 + Math.random() * 60}%`;
+                fish.style.bottom = `${10 + Math.random() * 30}%`;
+                fish.style.animationDelay = `${i * 0.8}s`;
+                document.body.appendChild(fish);
+                
+                // Eliminar el pez después de la animación
+                setTimeout(() => {
+                    fish.remove();
+                }, 2000);
+            }, i * 600);
+        }
+    }
 }
 
 // Inicializar sistema de trivia
@@ -498,6 +818,10 @@ async function initializePage() {
         animalName.textContent = 'Error al cargar datos';
         return;
     }
+    
+    // Inicializar sistemas de evitación de repeticiones
+    usedFacts.clear();
+    usedQuestions.clear();
     
     // Establecer el primer animal
     const creature = seaCreatures[currentCreatureIndex];
@@ -524,6 +848,8 @@ async function initializePage() {
     changeBtn.addEventListener('click', changeCreature);
     changeFactBtn.addEventListener('click', changeFact);
 }
+
+
 
 // Iniciar cuando la página cargue
 document.addEventListener('DOMContentLoaded', initializePage);
