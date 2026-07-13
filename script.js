@@ -540,11 +540,15 @@ class TriviaSystem {
             // Verificar si hay premio
             const premio = PREMIOS[correctAnswersCount];
             if (premio) {
-                // Si hay premio, cerrar trivia y cambiar animal
-                this.showPrizeAndChangeAnimal(premio);
+                // Si hay premio, mostrar mensaje de correcto y luego el premio después de 2 segundos
+                setTimeout(() => {
+                    this.showPrizeAndChangeAnimal(premio);
+                }, 2000);
             } else {
-                // Si no hay premio, seguir con la trivia
-                this.nextQuestion();
+                // Si no hay premio, mostrar mensaje de correcto y luego siguiente pregunta después de 2 segundos
+                setTimeout(() => {
+                    this.nextQuestion();
+                }, 2000);
             }
             
             // Celebración
